@@ -1,0 +1,210 @@
+CÓDIGO ALVO 3D SEM ILUMINAÇÃO
+GUSTAVO COSTA E MARCO VINÍCIUS XAVIER
+
+#include <glut.h>
+
+GLfloat angleX = 0.0f;  // Ângulo de rotação em torno do eixo X
+GLfloat angleY = 0.0f;  // Ângulo de rotação em torno do eixo Y
+GLfloat angleZ = 0.0f;  // Ângulo de rotação em torno do eixo Z
+
+void display()
+{
+	glClearColor(1.0, 1.0, 1.0, 1.0); // Limpa o buffer de cor com branco
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+
+	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+
+	glRotatef(angleX, 1.0f, 0.0f, 0.0f);
+	glRotatef(angleY, 0.0f, 1.0f, 0.0f);
+	glRotatef(angleZ, 0.0f, 0.0f, 1.0f);
+
+	// Círculo externo (preenchido)
+	glColor3f(0.0, 0.0, 0.0); // Cor preta
+	glutSolidTorus(0.15, 1.0, 20, 20);
+
+	// Círculo do meio (preenchido)
+	glColor3f(0.0, 0.0, 1.0); // Cor azul
+	glutSolidTorus(0.15, 0.7, 20, 20);
+
+	// Círculo interno (preenchido)
+	glColor3f(1.0, 0.0, 0.0); // Cor vermelha
+	glutSolidTorus(0.15, 0.4, 20, 20);
+
+	// Círculo rosa no centro
+	glColor3f(1.0, 0.8, 0.0); // Cor amarela
+	glutSolidSphere(0.05, 20, 20);
+
+	// Flecha (segmento de linha)
+	glColor3f(1.0, 0.4, 0.0); // Cor laranja
+	glLineWidth(6.0);
+	glBegin(GL_LINES);
+	glVertex3f(0.0, 0.0, 1.0); // Início da flecha
+	glVertex3f(0.0, 0.0, -1.0); // Fim da flecha
+	glEnd();
+
+	// Ponta da flecha (triângulo)
+	glColor3f(1.0, 0.4, 0.0); // Cor laranja
+	glBegin(GL_TRIANGLES);
+	glVertex3f(-0.05, 0.0, -0.9); // Vértice direito
+	glVertex3f(0.05, 0.0, -0.9); // Vértice esquerdo
+	glVertex3f(0.0, 0.0, -1.2); // Vértice superior
+	glEnd();
+
+	glFlush();
+	glutSwapBuffers();
+}
+
+void reshape(int width, int height)
+{
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45, (float)width / height, 1.0, 10.0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void specialKeys(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		angleX += 5.0f;
+		break;
+	case GLUT_KEY_DOWN:
+		angleX -= 5.0f;
+		break;
+	case GLUT_KEY_LEFT:
+		angleY += 5.0f;
+		break;
+	case GLUT_KEY_RIGHT:
+		angleY -= 5.0f;
+		break;
+	}
+
+	glutPostRedisplay();
+}
+
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(800, 600);
+	glutCreateWindow("Desenho - Alvo");
+	glEnable(GL_DEPTH_TEST);
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+	glutSpecialFunc(specialKeys);
+	glutMainLoop();
+
+	return 0;
+}
+
+---------------------------------------------------------------------------------------------------------
+CÓDIGO ALVO 3D COM ILUMINAÇÃO
+
+#include <glut.h>
+
+GLfloat angleX = 0.0f;  // Ângulo de rotação em torno do eixo X
+GLfloat angleY = 0.0f;  // Ângulo de rotação em torno do eixo Y
+GLfloat angleZ = 0.0f;  // Ângulo de rotação em torno do eixo Z
+
+void display()
+{
+    glClearColor(1.0, 1.0, 1.0, 1.0); // Limpa o buffer de cor com branco
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+
+    glRotatef(angleX, 1.0f, 0.0f, 0.0f);
+    glRotatef(angleY, 0.0f, 1.0f, 0.0f);
+    glRotatef(angleZ, 0.0f, 0.0f, 1.0f);
+
+    // Círculo externo (preenchido)
+    glColor3f(0.0, 0.0, 0.0); // Cor preta
+    glutSolidTorus(0.15, 1.0, 20, 20);
+
+    // Círculo do meio (preenchido)
+    glColor3f(0.0, 0.0, 1.0); // Cor azul
+    glutSolidTorus(0.15, 0.7, 20, 20);
+
+    // Círculo interno (preenchido)
+    glColor3f(1.0, 0.0, 0.0); // Cor vermelha
+    glutSolidTorus(0.15, 0.4, 20, 20);
+
+    // Círculo rosa no centro
+    glColor3f(1.0, 0.8, 0.0); // Cor amarela
+    glutSolidSphere(0.05, 20, 20);
+
+    // Flecha (segmento de linha)
+    glColor3f(1.0, 0.4, 0.0); // Cor laranja
+    glLineWidth(6.0);
+    glBegin(GL_LINES);
+    glVertex3f(0.0, 0.0, 1.0); // Início da flecha
+    glVertex3f(0.0, 0.0, -1.0); // Fim da flecha
+    glEnd();
+
+    // Ponta da flecha (triângulo)
+    glColor3f(1.0, 0.4, 0.0); // Cor laranja
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-0.05, 0.0, -0.9); // Vértice direito
+    glVertex3f(0.05, 0.0, -0.9); // Vértice esquerdo
+    glVertex3f(0.0, 0.0, -1.2); // Vértice superior
+    glEnd();
+
+    glFlush();
+    glutSwapBuffers();
+}
+
+void reshape(int width, int height)
+{
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45, (float)width / height, 1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void specialKeys(int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_UP:
+        angleX += 5.0f;
+        break;
+    case GLUT_KEY_DOWN:
+        angleX -= 5.0f;
+        break;
+    case GLUT_KEY_LEFT:
+        angleY += 5.0f;
+        break;
+    case GLUT_KEY_RIGHT:
+        angleY -= 5.0f;
+        break;
+    }
+
+    glutPostRedisplay();
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Desenho Animado - Alvo");
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING); // Habilita a iluminação
+    glEnable(GL_LIGHT0); // Habilita a fonte de luz 0
+
+    // Define as propriedades da luz ambiente
+    GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutSpecialFunc(specialKeys);
+    glutMainLoop();
+
+    return 0;
+}
